@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang=“ru”>
+    <head>
+        <meta charset=“UTF-8”>
+        <title>Неделя</title>
+    </head>
+
+    <body>
+        <div class="task3">
+        <form method=“get”>
+            Введите номер дня недели (от 1 до 7):
+            <input type=“number” name=“day”><br>
+            <button type=“submit”>Отправить</button>
+        </form>
+
+        <p id="result"></p>
+        </div>
+
+        <script>
+            document.querySelector('form').addEventListener('submit', function(event) 
+            {
+                event.preventDefault();
+
+                let day = document.querySelector('input').value;
+
+                if (day > 7 || day < 1) 
+                {
+                    document.getElementById('result').innerHTML = 'Число должно быть от 1 до 7.';
+                } else {
+                    let days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+                    document.getElementById('result').innerHTML = days[day - 1];
+                }
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Вагоны</title>
+    </head>
+    <body>
+        <div class="task4">
+        <h1>Укажите количество коробок и габариты вагонов</h1>
+
+        <p>Размеры коробки: 30х50х40</p>
+
+        Количество коробок: <input type="number" min="0"  id="box_quantity"><br />
+        Высота вагона (х): <input type="number" min="1" id="height"><br />
+        Длина вагона (у):  <input type="number" min="1" id="length"><br />
+        Ширина вагона (z): <input type="number" min="1" id="width"><br />
+        
+            <button onclick="vagonFunction()">Ответ</button>
+            <p id="answer_ex4">Количество вагонов:</p>
+        </div>
+
+        <script>
+            function noDigits(event) {
+                if ("1234567890".indexOf(event.key) != -1)
+                event.preventDefault();
+            }
+
+            function sizeControl(box, vagon) {
+                if (box.x <= vagon.x && box.y <= vagon.y && box.z <= vagon.z) return 1;       
+                else if (box.x <= vagon.z && box.y <= vagon.y && box.z <= vagon.x) return 1;
+                else if (box.x <= vagon.x && box.y <= vagon.z && box.z <= vagon.y) return 1;
+                else if (box.x <= vagon.y && box.y <= vagon.x && box.z <= vagon.z) return 1;
+                else if (box.x <= vagon.y && box.y <= vagon.z && box.z <= vagon.x) return 1;
+                else if (box.x <= vagon.z && box.y <= vagon.x && box.z <= vagon.y) return 1;
+                else return -1;
+            }
+
+            function boxInVagon(x, y, z, interlayer, vagon) {
+                var counter = 0, counter_x = 0, counter_y = 0, counter_z = 0;
+                var remain = vagon.x;
+                while (remain - x >= 0)
+                {
+                    remain -= x;
+                    counter_x++;
+                    if (remain - interlayer >= 0)
+                        remain -= interlayer;
+                }
+                remain = vagon.y;
+
+                while (remain - y >= 0)
+                {
+                    remain -= y;
+                    counter_y++;
+                    if (remain - interlayer >= 0)
+                        remain -= interlayer;
+                }
+                remain = vagon.z;
+
+                counter = counter_x * counter_y;
+                while (remain - z >= 0)
+                {
+                    remain -= z;
+                    counter_z++;
+                    if (remain - interlayer >= 0)
+                        remain -= interlayer;
+                }
+
+                counter = counter * counter_z;
+
+                return counter;
+            }
+
+            function vagonFunction() {
+                var box = new Object();
+                box.x = 50;
+                box.y = 40;
+                box.z = 30;
+                var interlayer = 5;
+                var counter = 0;
+                var buf = 0;
+
+                var box_quant = document.getElementById('box_quantity').value;
+                var vagon = new Object();
+                vagon.x = document.getElementById('height').value;
+                vagon.y = document.getElementById('length').value;
+                vagon.z = document.getElementById('width').value;
+
+                if (vagon.x > vagon.y)
+                {
+                    buf = vagon.x;
+                    vagon.x = vagon.y;
+                    vagon.y = buf;
+                }
+
+                if (vagon.y > vagon.z)
+                {
+                    buf = vagon.y;
+                    vagon.y = vagon.z;
+                    vagon.z = buf;
+                }
+                
+                if (vagon.x > vagon.z)
+                {
+                    buf = vagon.x;
+                    vagon.x = vagon.z;
+                    vagon.z = buf;
+                }
+
+                if (vagon.x == 0|| vagon.y == 0 || vagon.z == 0 || box_quant == 0)
+                {
+                    alert ("Нехватка необходимых значений или нулевые значения! Введите данные");
+                }
+                else if (vagon.x < 0|| vagon.y < 0 || vagon.z < 0 || box_quant < 0)
+                {
+                    alert ("Необходимые значение не могут быть отрицательными!");
+                }
+                else if (sizeControl(box, vagon) == -1)
+                {
+                    document.getElementById('answer_ex4').innerHTML = "Количество вагонов: 0 (размер коробки больше размера вагона)";
+                }
+                else
+                {
+                    counter = Math.max(boxInVagon(box.x, box.y, box.z, interlayer, vagon), boxInVagon(box.x, box.z, box.y, interlayer, vagon),
+                    boxInVagon(box.z, box.y, box.x, interlayer, vagon), boxInVagon(box.y, box.z, box.x, interlayer, vagon),
+                    boxInVagon(box.z, box.x, box.y, interlayer, vagon), boxInVagon(box.y, box.x, box.z, interlayer, vagon));
+
+                    var answer = Math.ceil(box_quant/counter);
+                    document.getElementById('answer_ex4').innerHTML = "Количество вагонов: " + answer;
+                }    
+            }
+        </script>
+    </body>
+</html>

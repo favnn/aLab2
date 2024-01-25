@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Деление</title>
+    </head>
+
+    <body>
+        <div class="task2">
+        <h1>Введите значения</h1>
+
+        <div id="count"></div>
+        Делимое: <input id="dividend" type="text"><br />
+        Делитель: <input id="divisor" type="text"><br />
+        <button id="calculate_button">Расчитать Частное и Остаток</button>
+        </div>
+
+        <script type="text/javascript">
+                
+                window.onload = function () 
+                {
+                    document.getElementById('calculate_button').onclick = function() 
+                    {
+                        const dividend=document.getElementById("dividend").value;
+                        const divisor=document.getElementById("divisor").value;
+
+                        var quotient = dividend / divisor;
+                        var remainder = dividend % divisor;
+
+                        document.getElementById('count').innerHTML = 'Частное = ' + quotient + '; Остаток = ' + remainder;              
+                    }
+                }
+        </script>
+    </body>
+</html>
